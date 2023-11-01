@@ -1,0 +1,6 @@
+all:
+	gcc main.c Headers/LeituraArquivo.h src/LeituraArquivo.c
+Linux:
+	./a.out
+Windows:
+	./a.exe
