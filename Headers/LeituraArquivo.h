@@ -10,3 +10,4 @@ typedef struct MatrizMapa{
 }MatrizMapa;
 
 void LeituraMatriz(const char *arqEntrada,MatrizMapa *ptr);
+void EscreverSaida(const char *Saida);
