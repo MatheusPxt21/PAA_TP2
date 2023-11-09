@@ -1,21 +1,18 @@
 #include "Pilha.h"
 
-//FILA DE Pilhas > Ira armazenar os caminhos válidos, escolher com o maior PontosVida
-
 typedef struct Node {
-    PilhaCoordenadas pilha;
+    int linha,coluna;
     struct Node* next;
 } Node;
 
-typedef struct FilaPilhas {
+typedef struct Fila {
     Node* front;
     Node* rear;
-} FilaPilhas;
+} Fila;
 
-void initializeFilaPilhas(FilaPilhas* fila);
-int isEmptyFilaPilhas(FilaPilhas* fila);
-int pilhaEqual(PilhaCoordenadas* pilha1, PilhaCoordenadas* pilha2);
-void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha);
-void RetirarFilaPilhas(FilaPilhas* fila);
-void imprimirFilaPilhas(FilaPilhas* fila);
-void liberarFilaPilhas(FilaPilhas* fila);
+void initializeFila(Fila* fila);
+int isEmptyFila(Fila* fila);
+void InserirFila(Fila* fila, int linha,int coluna);
+void RetirarFila(Fila* fila);
+void imprimirFila(Fila* fila);
+void liberarFila(Fila* fila);

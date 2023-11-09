@@ -4,7 +4,7 @@ int main(){
     MatrizMapa ptr;
     LeituraMatriz("..\\TP2\\MapasExemplo\\caverna1.txt",&ptr);
     PilhaCoordenadas PtrCoordenadas;
-    FilaPilhas filas;
+    Fila filas;
     Aventureiro ptrAv;
     //printf("PASSOU!\n");
     for(int i = 0;i<ptr.LinhasMapa;i++){

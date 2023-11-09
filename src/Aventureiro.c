@@ -22,14 +22,18 @@ void InicializarAventureiro(MatrizMapa *ptrMapa,Aventureiro *ptrAv){
     }
 }
 
-void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,FilaPilhas *Filas){
+void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,Fila *Filas){
     InicializarAventureiro(ptr,ptrAv);
     initialize(PtrCoordenadas);
-    initializeFilaPilhas(Filas);
-    Deslocar(ptr,ptrAv,PtrCoordenadas,Filas);
+    initializeFila(Filas);
+    if(Deslocar(ptr,ptrAv,PtrCoordenadas,Filas)==1){
+        EscreverArquivoDeSaida(Filas);
+    }else{
+        EscreverArquivoDeSaidaErro();
+    }
 }
 
-int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, FilaPilhas *Filas){
+int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, Fila *Filas){
     //Calcular a primeira Linha
     int controlJ = 1,controlI = 1,i,j,NovoJ = ptr->ColunasInicial,NovoI =ptr->LinhasInicial ;
     for(i =NovoI;controlI == 1;i--){
@@ -48,9 +52,12 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
         }
         controlJ = 1;
     }
-    PreencherPilha(ptr,ptrAv,PtrCoordenadas);
-    ApresentarCoordenadas(PtrCoordenadas);
-    ApresentarTabelaSimplex(ptrAv,ptr);
+    PreencherFila(ptr,ptrAv,Filas);
+    //ApresentarCoordenadas(PtrCoordenadas);
+    ApresentarTabelaPD(ptrAv,ptr);
+    if(ptrAv->TabelaPD[ptr->LinhasFinal][ptr->ColunasFinal]>0){
+        return 1;
+    }
     return 0;
 }
 
@@ -97,7 +104,7 @@ int EscolherMelhorCaminho(int i,Aventureiro *ptrAv,MatrizMapa *ptr){
     }
     return PosicaoMaiorPontoDeVida;
 }
-void ApresentarTabelaSimplex(Aventureiro *ptrAv,MatrizMapa *ptr){
+void ApresentarTabelaPD(Aventureiro *ptrAv,MatrizMapa *ptr){
     for(int i = 0;i<ptr->LinhasMapa;i++){
         for(int j = 0;j<ptr->ColunasMapa;j++){
             printf(" [%d] ",ptrAv->TabelaPD[i][j]);
@@ -106,15 +113,15 @@ void ApresentarTabelaSimplex(Aventureiro *ptrAv,MatrizMapa *ptr){
     }
 }
 
-void PreencherPilha(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *ptrCoordenadas){
-    push(ptrCoordenadas,ptr->LinhasInicial,ptr->ColunasInicial);
+void PreencherFila(MatrizMapa *ptr,Aventureiro *ptrAv,Fila *fila){
+    InserirFila(fila,ptr->LinhasInicial,ptr->ColunasInicial);
     int i = ptr->LinhasInicial,j = ptr->ColunasInicial,flag01,flag02;
     while(1){
         if(i>0 && ptrAv->TabelaPD[i-1][j]>ptrAv->TabelaPD[i][j-1]){
-            push(ptrCoordenadas,i-1,j);
+            InserirFila(fila,i-1,j);
             i += -1;
         }else if(j>0 && ptrAv->TabelaPD[i-1][j] < ptrAv->TabelaPD[i][j-1] ){
-            push(ptrCoordenadas,i,j-1);
+            InserirFila(fila,i,j-1);
             j += -1;
         }else{
             //Escolher o mais próxima da saída
@@ -125,7 +132,7 @@ void PreencherPilha(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *ptrCoor
             }else{
                 i += -1;
             }
-            push(ptrCoordenadas,i,j);
+            InserirFila(fila,i,j);
         }
         if(i==ptr->LinhasFinal && j==ptr->ColunasFinal){
             break;
@@ -135,4 +142,32 @@ void PreencherPilha(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *ptrCoor
     }
     //push(ptrCoordenadas,ptr->LinhasFinal,ptr->ColunasFinal);
 
+}
+
+void EscreverArquivoDeSaida(Fila *FILA) {
+    FILE *file;
+    file = fopen("..\\TP2\\Resultado\\Resultado.txt", "w");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de saída.\n");
+        return;
+    }
+    Node* temp = FILA->front;
+    while (temp != NULL) {
+        fprintf(file, "%d %d\n", temp->linha, temp->coluna);
+        temp = temp->next;
+    }
+
+    fclose(file);
+}
+void EscreverArquivoDeSaidaErro(){
+    FILE *file;
+    file = fopen("..\\TP2\\Resultado\\Resultado.txt", "w");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de saída.\n");
+        return;
+    }
+    fprintf(file, "Nao foi possivel sair do labirinto com vida ): RIP\n");
+    fclose(file);
 }
