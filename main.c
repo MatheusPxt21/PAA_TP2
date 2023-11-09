@@ -2,7 +2,7 @@
 
 int main(){
     MatrizMapa ptr;
-    LeituraMatriz("..\\TP2\\MapasExemplo\\caverna1.txt",&ptr);
+    LeituraMatriz("..\\TP2\\MapasExemplo\\caverna2.txt",&ptr);
     PilhaCoordenadas PtrCoordenadas;
     Fila filas;
     Aventureiro ptrAv;

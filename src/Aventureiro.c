@@ -38,23 +38,30 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
     int controlJ = 1,controlI = 1,i,j,NovoJ = ptr->ColunasInicial,NovoI =ptr->LinhasInicial ;
     for(i =NovoI;controlI == 1;i--){
         ptrAv->TabelaPD[i][NovoJ] = ptrAv->PontosVidaAtual;
-        //printf("%d\n",ptrAv->PontosVidaAtual);
         for(j = NovoJ-1;controlJ==1 ;j--){
-            //printf("Valor de J: %d\n" ,  j);
+
             controlJ = EsquerdaLivre(i,j,ptrAv,ptr);
+
         }
         j = EscolherMelhorCaminho(i,ptrAv,ptr);
+
         controlI = CimaLivre(i,j,ptrAv,ptr);
         NovoJ = j;
-        if(i>0){
+        if(i-1>0){
             NovoI = i-1;
             ptrAv->PontosVidaAtual += ptr->ConteudoMapa[NovoI][NovoJ];
         }
+        if(ptrAv->PontosVidaAtual<=0){
+            break;
+        }
         controlJ = 1;
+        ApresentarTabelaPD(ptrAv,ptr);
     }
+    //Preencher o restante da tabela
+
+    //printf("Depois!\n");
+
     PreencherFila(ptr,ptrAv,Filas);
-    //ApresentarCoordenadas(PtrCoordenadas);
-    ApresentarTabelaPD(ptrAv,ptr);
     if(ptrAv->TabelaPD[ptr->LinhasFinal][ptr->ColunasFinal]>0){
         return 1;
     }
@@ -62,7 +69,7 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
 }
 
 int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
-    printf("Dentro de Esquerda Livre,posicao i e j: [%d %d]\n",i,j);
+    //printf("Dentro de Esquerda Livre,posicao i e j: [%d %d]\n",i,j);
     if(j>=0){
         if(i==ptr->LinhasInicial && j==ptr->ColunasInicial){
             ptrAv->TabelaPD[i][j] = ptrAv->PontosVidaAtual;
@@ -70,7 +77,7 @@ int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
             //printf("DENTRO DO ELSE!\n");
             ptrAv->TabelaPD[i][j] = ptrAv->TabelaPD[i][j+1] + ptr->ConteudoMapa[i][j];
         }
-        if(ptrAv->TabelaPD[i][j]>=0){
+        if(ptrAv->TabelaPD[i][j]>0){
             return 1;
         }
     }
@@ -78,8 +85,8 @@ int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
 }
 int CimaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
     if(i-1>=0){
-        ptrAv->TabelaPD[i-1][j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[i][j];
-        if(ptrAv->TabelaPD[i][j]>=0){
+        ptrAv->TabelaPD[i-1][j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[i-1][j];
+        if(ptrAv->TabelaPD[i][j]>0){
             return 1;
         }
     }
@@ -117,19 +124,27 @@ void PreencherFila(MatrizMapa *ptr,Aventureiro *ptrAv,Fila *fila){
     InserirFila(fila,ptr->LinhasInicial,ptr->ColunasInicial);
     int i = ptr->LinhasInicial,j = ptr->ColunasInicial,flag01,flag02;
     while(1){
-        if(i>0 && ptrAv->TabelaPD[i-1][j]>ptrAv->TabelaPD[i][j-1]){
+        //break;
+        if(j-1>=0 && i-1>=0 && ptrAv->TabelaPD[i-1][j]>ptrAv->TabelaPD[i][j-1]){
+            //printf("Dentro do primeiro if e antes de IF!\n");
             InserirFila(fila,i-1,j);
+            //printf("Depois do primeiro if e antes de IF!\n");
             i += -1;
-        }else if(j>0 && ptrAv->TabelaPD[i-1][j] < ptrAv->TabelaPD[i][j-1] ){
+        }else if(i-1>-0 && j-1>=0 && ptrAv->TabelaPD[i-1][j] < ptrAv->TabelaPD[i][j-1] ){
             InserirFila(fila,i,j-1);
             j += -1;
         }else{
             //Escolher o mais próxima da saída
+            //printf("Dentro do else de PF!\n");
             flag01 = i-1;
             flag02 = j-1;
-            if(ptr->LinhasFinal-flag01>ptr->ColunasFinal-flag02){
+            if(i==0){
                 j+=-1;
-            }else{
+            }else if(j==0){
+                i += -1;
+            }else if(j>0 && i>0 &&ptr->LinhasFinal-flag01>ptr->ColunasFinal-flag02){
+                j+=-1;
+            }else if(j>0 && i>0 &&ptr->LinhasFinal-flag01<ptr->ColunasFinal-flag02){
                 i += -1;
             }
             InserirFila(fila,i,j);
