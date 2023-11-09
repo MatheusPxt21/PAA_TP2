@@ -1,5 +1,5 @@
 all:
-	gcc main.c Headers/LeituraArquivo.h src/LeituraArquivo.c Headers/Pilha.h src/Pilha.c Headers/Fila.h  src/Fila.c  Headers/PilhaRamificacao.h src/PilhaRamificacao.c Headers/Aventureiro.h src/Aventureiro.c
+	gcc main.c Headers/LeituraArquivo.h src/LeituraArquivo.c Headers/Pilha.h src/Pilha.c Headers/Fila.h  src/Fila.c  Headers/Aventureiro.h src/Aventureiro.c
 Linux:
 	./a.out
 Windows:

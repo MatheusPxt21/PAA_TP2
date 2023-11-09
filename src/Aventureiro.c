@@ -22,98 +22,117 @@ void InicializarAventureiro(MatrizMapa *ptrMapa,Aventureiro *ptrAv){
     }
 }
 
-void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,PilhaRamificado *PtrRamificado,FilaPilhas *Filas){
-
-    int i,j,LinhaRamificacao,ColunaRamificacao;
-    i = ptr->LinhasInicial;
-    j = ptr->ColunasInicial;
+void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,FilaPilhas *Filas){
     InicializarAventureiro(ptr,ptrAv);
     initialize(PtrCoordenadas);
-    inicializarRamificacao(PtrRamificado);
     initializeFilaPilhas(Filas);
-    Deslocar(ptr,ptrAv,&i,&j,&LinhaRamificacao,&ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-
+    Deslocar(ptr,ptrAv,PtrCoordenadas,Filas);
 }
 
-int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, int *i, int *j, int *LinhaRamificacao, int *ColunaRamificacao, PilhaCoordenadas *PtrCoordenadas, PilhaRamificado *PtrRamificado, FilaPilhas *Filas){
-    //Ideia geral:
-    // Semelhante ao TP anterior envolvendo o backtracking, a função irá explorar as ramificações, nesse caso esquerda e cima
-    //A tabela será acrescida com os valores dos pontos de vida do jogador ao longo do trajeto pelo mapa
-    //Quando uma ramificação for totalmente testada, o mapa é restaurado até aquela posição.
-
-    if(ptrAv->PontosVidaAtual>0){
-        //Colocar a função de restaurar vida
+int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, FilaPilhas *Filas){
+    //Calcular a primeira Linha
+    int controlJ = 1,controlI = 1,i,j,NovoJ = ptr->ColunasInicial,NovoI =ptr->LinhasInicial ;
+    for(i =NovoI;controlI == 1;i--){
+        ptrAv->TabelaPD[i][NovoJ] = ptrAv->PontosVidaAtual;
+        //printf("%d\n",ptrAv->PontosVidaAtual);
+        for(j = NovoJ-1;controlJ==1 ;j--){
+            //printf("Valor de J: %d\n" ,  j);
+            controlJ = EsquerdaLivre(i,j,ptrAv,ptr);
+        }
+        j = EscolherMelhorCaminho(i,ptrAv,ptr);
+        controlI = CimaLivre(i,j,ptrAv,ptr);
+        NovoJ = j;
+        if(i>0){
+            NovoI = i-1;
+            ptrAv->PontosVidaAtual += ptr->ConteudoMapa[NovoI][NovoJ];
+        }
+        controlJ = 1;
     }
-    //Caso a saida for encontrada e o jogador ainda estiver com vida
-    if(ptrAv->PontosVidaAtual>0 && *i == ptr->LinhasFinal && *j==ptr->ColunasFinal){
-        push(PtrCoordenadas,*i,*j,ptrAv->PontosVidaAtual);
-        InserirFilaPilhas(Filas,PtrCoordenadas,ptrAv->PontosVidaAtual);
-    }else if(ptrAv->PontosVidaAtual<=0){
-
-    }
-
-    if(EsquerdaLivre(*j) && CimaLivre(*i)){
-        *LinhaRamificacao = *i;
-        *ColunaRamificacao = *j;
-        push(PtrCoordenadas,*i,*j,ptrAv->PontosVidaAtual);
-        pushRamificacao(PtrRamificado,*i,*j,ptrAv->PontosVidaAtual);
-        if(EsquerdaLivre(*j) && PtrRamificado->topo->Esquerda==-1){
-            PtrRamificado->topo->Esquerda = 1;
-            (*j) = (*j) + 1;
-            ptrAv->TabelaPD[*i][*j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[*i][*j];
-            Deslocar(ptr,ptrAv,i,j,LinhaRamificacao,ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-
-            //Função LimparMatriz e restaurar pontos de vida, voltar até o estado em que a ramificação foi feita.
-
-        }else{
-            PtrRamificado->topo->Esquerda = 0;
-        }
-        if(CimaLivre(*j) && PtrRamificado->topo->Cima==-1){
-            PtrRamificado->topo->Cima = 1;
-            (*i) = (*i) + 1;
-            ptrAv->TabelaPD[*i][*j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[*i][*j];
-            Deslocar(ptr,ptrAv,i,j,LinhaRamificacao,ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-
-            //Função LimparMatriz e restaurar pontos de vida, voltar até o estado em que a ramificação foi feita.
-
-        }else{
-            PtrRamificado->topo->Cima = 0;
-        }
-
-        //Limpar a tabela já que a ramificação foi testada, retirar da pilha e restaurar os pontos de vida no ponto da última ramificação.
-        Deslocar(ptr,ptrAv,i,j,LinhaRamificacao,ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-
-
-    }else{
-        //Apenas um caminho válido
-        if(EsquerdaLivre(*j)){
-            (*j) = (*j) + 1;
-            ptrAv->TabelaPD[*i][*j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[*i][*j];
-            Deslocar(ptr,ptrAv,i,j,LinhaRamificacao,ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-        }
-        if(CimaLivre(*i)){
-            (*i) = (*i) + 1;
-            ptrAv->TabelaPD[*i][*j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[*i][*j];
-            Deslocar(ptr,ptrAv,i,j,LinhaRamificacao,ColunaRamificacao,PtrCoordenadas,PtrRamificado,Filas);
-
-        }
-    }
-
+    PreencherPilha(ptr,ptrAv,PtrCoordenadas);
+    ApresentarCoordenadas(PtrCoordenadas);
+    ApresentarTabelaSimplex(ptrAv,ptr);
     return 0;
 }
 
-int EsquerdaLivre(int j){
-    if(j>0){
-        return 1;
-    }else{
-        return 0;
+int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
+    printf("Dentro de Esquerda Livre,posicao i e j: [%d %d]\n",i,j);
+    if(j>=0){
+        if(i==ptr->LinhasInicial && j==ptr->ColunasInicial){
+            ptrAv->TabelaPD[i][j] = ptrAv->PontosVidaAtual;
+        }else if(j<ptr->ColunasMapa-1){
+            //printf("DENTRO DO ELSE!\n");
+            ptrAv->TabelaPD[i][j] = ptrAv->TabelaPD[i][j+1] + ptr->ConteudoMapa[i][j];
+        }
+        if(ptrAv->TabelaPD[i][j]>=0){
+            return 1;
+        }
     }
-
+    return 0;
 }
-int CimaLivre(int i){
-    if(i>0){
-        return 1;
-    }else{
-        return 0;
+int CimaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr){
+    if(i-1>=0){
+        ptrAv->TabelaPD[i-1][j] = ptrAv->PontosVidaAtual + ptr->ConteudoMapa[i][j];
+        if(ptrAv->TabelaPD[i][j]>=0){
+            return 1;
+        }
     }
+    return 0;
+}
+int EscolherMelhorCaminho(int i,Aventureiro *ptrAv,MatrizMapa *ptr){
+    int PosicaoMaiorPontoDeVida;
+    for(int j = 0;j<ptr->ColunasMapa;j++){
+        if(j==0){
+            PosicaoMaiorPontoDeVida = j;
+        }else{
+            if(ptrAv->TabelaPD[i][j]>ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]){
+                PosicaoMaiorPontoDeVida = j;
+            }else if(ptrAv->TabelaPD[i][j]==ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]){
+                if(i>0){
+                    if((ptrAv->TabelaPD[i][j]+ptr->ConteudoMapa[i-1][j]+ptrAv->PontosVidaAtual)>(ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida] +ptr->ConteudoMapa[i-1][PosicaoMaiorPontoDeVida] + ptrAv->PontosVidaAtual)){
+                        PosicaoMaiorPontoDeVida = j;
+                    }
+                }
+            }
+        }
+    }
+    return PosicaoMaiorPontoDeVida;
+}
+void ApresentarTabelaSimplex(Aventureiro *ptrAv,MatrizMapa *ptr){
+    for(int i = 0;i<ptr->LinhasMapa;i++){
+        for(int j = 0;j<ptr->ColunasMapa;j++){
+            printf(" [%d] ",ptrAv->TabelaPD[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void PreencherPilha(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *ptrCoordenadas){
+    push(ptrCoordenadas,ptr->LinhasInicial,ptr->ColunasInicial);
+    int i = ptr->LinhasInicial,j = ptr->ColunasInicial,flag01,flag02;
+    while(1){
+        if(i>0 && ptrAv->TabelaPD[i-1][j]>ptrAv->TabelaPD[i][j-1]){
+            push(ptrCoordenadas,i-1,j);
+            i += -1;
+        }else if(j>0 && ptrAv->TabelaPD[i-1][j] < ptrAv->TabelaPD[i][j-1] ){
+            push(ptrCoordenadas,i,j-1);
+            j += -1;
+        }else{
+            //Escolher o mais próxima da saída
+            flag01 = i-1;
+            flag02 = j-1;
+            if(ptr->LinhasFinal-flag01>ptr->ColunasFinal-flag02){
+                j+=-1;
+            }else{
+                i += -1;
+            }
+            push(ptrCoordenadas,i,j);
+        }
+        if(i==ptr->LinhasFinal && j==ptr->ColunasFinal){
+            break;
+        }
+        //printf("Valor de I: %d \n",i);
+        //printf("Valor de J: %d \n",j);
+    }
+    //push(ptrCoordenadas,ptr->LinhasFinal,ptr->ColunasFinal);
+
 }

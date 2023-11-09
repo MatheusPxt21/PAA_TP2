@@ -1,4 +1,4 @@
-#include "PilhaRamificacao.h"
+#include "Fila.h"
 //Contém a tabela armazenando os pontos de vida durante o trajeto.
 //Pontos de vida atuais
 typedef struct Aventureiro{
@@ -7,8 +7,11 @@ typedef struct Aventureiro{
 }Aventureiro;
 
 void InicializarAventureiro(MatrizMapa *ptrMapa,Aventureiro *ptrAv);
-void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,PilhaRamificado *PtrRamificado,FilaPilhas *Filas);
-int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, int *i, int *j, int *LinhaRamificacao, int *ColunaRamificacao, PilhaCoordenadas *PtrCoordenadas, PilhaRamificado *PtrRamificado, FilaPilhas *Filas);
-int EsquerdaLivre(int j);
-int CimaLivre(int i);
-void RestaurarMatriz(int *i,int *j,PilhaCoordenadas *PtrCoordenadas,PilhaRamificado *PtrRamificado);
+void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,FilaPilhas *Filas);
+int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, FilaPilhas *Filas);
+int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr);
+int CimaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr);
+int EscolherMelhorCaminho(int i,Aventureiro *ptrAv,MatrizMapa *ptr);
+void ApresentarTabelaSimplex(Aventureiro *ptrAv,MatrizMapa *ptr);
+void PreencherPilha(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *ptrCoordenadas);
+void EscreverArquivoDeSaida(const char *arqEntrada,Aventureiro *ptrAv);

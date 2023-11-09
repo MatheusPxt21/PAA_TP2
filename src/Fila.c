@@ -25,7 +25,7 @@ int pilhaEqual(PilhaCoordenadas* pilha1, PilhaCoordenadas* pilha2) {
     return 1;
 }
 
-void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha,int PontosVida) {
+void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha) {
     Node* novoNode = (Node*)malloc(sizeof(Node));
     if (novoNode == NULL) {
         printf("Erro: Memória insuficiente\n");
@@ -43,7 +43,7 @@ void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha,int PontosVida)
 
     Coordenadas* temp = pilha->topo;
     while (temp != NULL) {
-        push(novaPilha, temp->line, temp->collun,PontosVida);
+        push(novaPilha, temp->line, temp->collun);
         temp = temp->next;
     }
 
@@ -85,27 +85,6 @@ void imprimirFilaPilhas(FilaPilhas* fila) {
     }
 }
 
-void pilhaComMaiorHP(FilaPilhas* fila) {
-    if (isEmptyFilaPilhas(fila)) {
-        printf("Fila de pilhas vazia\n");
-        return;
-    }
-
-    int maiorPontosVida = fila->front->pilha.PontosVida;
-    Node* temp = fila->front;
-    Node* pilhaMaiorHP = temp;
-
-    while (temp != NULL) {
-        if (temp->pilha.PontosVida > maiorPontosVida) {
-            maiorPontosVida = temp->pilha.PontosVida;
-            pilhaMaiorHP = temp;
-        }
-        temp = temp->next;
-    }
-
-    printf("Pilha com maior HP:\n");
-    ApresentarCoordenadas(&(pilhaMaiorHP->pilha));
-}
 
 
 void liberarFilaPilhas(FilaPilhas* fila) {

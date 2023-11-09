@@ -7,7 +7,7 @@ int isEmpty(PilhaCoordenadas* ptr) {
     return ptr->topo == NULL;
 }
 
-void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun,int PontosDeVidaAtuais) {
+void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun) {
     Coordenadas* PtrVar = (Coordenadas*)malloc(sizeof(Coordenadas));
     if (PtrVar == NULL) {
         printf("Ocorreu um erro na alocação de memória.\n");
@@ -15,12 +15,8 @@ void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun,int PontosDeVidaAtua
     }
     PtrVar->line = ptrLine;
     PtrVar->collun = ptrCollun;
-    ptr->PontosVida = PontosDeVidaAtuais;
     PtrVar->next = ptr->topo;
     ptr->topo = PtrVar;
-}
-void RestaurarPontosDeVida(PilhaCoordenadas* ptr,MatrizMapa *ptrMapa){
-    ptr->PontosVida = ptrMapa->VidaJogador;
 }
 
 void pop(PilhaCoordenadas* ptr) {
@@ -37,7 +33,6 @@ void ApresentarCoordenadas(PilhaCoordenadas* ptr) {
         printf("Pilha vazia\n");
     } else {
         Coordenadas* PtrVar = ptr->topo;
-        printf("Vida: %d\n ",ptr->PontosVida);
         printf("Coordenadas: ");
         while (PtrVar != NULL) {
             printf("[%d|%d] ", PtrVar->line, PtrVar->collun);

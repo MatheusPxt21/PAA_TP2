@@ -15,8 +15,7 @@ typedef struct FilaPilhas {
 void initializeFilaPilhas(FilaPilhas* fila);
 int isEmptyFilaPilhas(FilaPilhas* fila);
 int pilhaEqual(PilhaCoordenadas* pilha1, PilhaCoordenadas* pilha2);
-void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha,int PontosVida);
+void InserirFilaPilhas(FilaPilhas* fila, PilhaCoordenadas* pilha);
 void RetirarFilaPilhas(FilaPilhas* fila);
 void imprimirFilaPilhas(FilaPilhas* fila);
-void pilhaComMaiorHP(FilaPilhas* fila);
 void liberarFilaPilhas(FilaPilhas* fila);

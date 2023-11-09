@@ -8,14 +8,12 @@ typedef struct Coordenadas {
 } Coordenadas;
 
 typedef struct PilhaCoordenadas {
-    int PontosVida;
     Coordenadas* topo;
 } PilhaCoordenadas;
 
 void initialize(PilhaCoordenadas* ptr);
 int isEmpty(PilhaCoordenadas* ptr);
-void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun,int PontosDeVidaAtuais);
-void RestaurarPontosDeVida(PilhaCoordenadas* ptr,MatrizMapa *ptrMapa);
+void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun);
 void pop(PilhaCoordenadas* ptr);
 void ApresentarCoordenadas(PilhaCoordenadas* ptr);
 void LiberarPilha(PilhaCoordenadas* ptr);
