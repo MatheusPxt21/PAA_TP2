@@ -1,9 +1,17 @@
-#include <stdio.h>
+#include "caverna.h"
 
 int main() {
-    int a = 20;
-    a = 40;
-    printf("%d", a);
-    printf("Hello, World!\n");
+    FILE *entrada = fopen("caverna1.txt", "r");
+    if (!entrada) {
+        perror("Erro ao abrir o arquivo de entrada.");
+        return 1;
+    }
+
+    Caverna caverna;
+    lerCaverna(entrada, &caverna);
+    fclose(entrada);
+    //imprimirResultadoCaverna(caverna);
+    resolverCaverna(caverna, "resultado.txt");
+
     return 0;
 }
