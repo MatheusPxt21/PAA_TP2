@@ -44,7 +44,6 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
 
         }
         j = EscolherMelhorCaminho(i,ptrAv,ptr);
-
         controlI = CimaLivre(i,j,ptrAv,ptr);
         NovoJ = j;
         if(i-1>0){
@@ -55,14 +54,13 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
             break;
         }
         controlJ = 1;
-        ApresentarTabelaPD(ptrAv,ptr);
     }
+    ApresentarTabelaPD(ptrAv,ptr);
     //Preencher o restante da tabela
 
-    //printf("Depois!\n");
 
-    PreencherFila(ptr,ptrAv,Filas);
     if(ptrAv->TabelaPD[ptr->LinhasFinal][ptr->ColunasFinal]>0){
+        PreencherFila(ptr,ptrAv,Filas);
         return 1;
     }
     return 0;
