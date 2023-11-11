@@ -57,8 +57,25 @@ int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenad
     }
     ApresentarTabelaPD(ptrAv,ptr);
     //Preencher o restante da tabela
-
-
+    /*int I = 0,J = ptr->ColunasInicial,flag = 0;
+    for(int i = ptr->LinhasInicial;i>0;i--){
+        for(int j = ptr->ColunasInicial;j>0;j--){
+            if(ptrAv->TabelaPD[i][j]==0 && j<ptr->ColunasInicial && i<ptr->LinhasInicial){
+                if(ptrAv->TabelaPD[i+1][J]<ptrAv->TabelaPD[i+1][j]){
+                    I = i;
+                    J = j;
+                }
+            }
+        }
+        while(1){
+            if(ptrAv->TabelaPD[I][J]==0){
+                ptrAv->TabelaPD[I][J] += ptrAv->TabelaPD[I+1][J];
+            }
+            J-=1;
+            break;
+        }
+    }
+    */
     if(ptrAv->TabelaPD[ptr->LinhasFinal][ptr->ColunasFinal]>0){
         PreencherFila(ptr,ptrAv,Filas);
         return 1;
@@ -96,13 +113,17 @@ int EscolherMelhorCaminho(int i,Aventureiro *ptrAv,MatrizMapa *ptr){
         if(j==0){
             PosicaoMaiorPontoDeVida = j;
         }else{
-            if(ptrAv->TabelaPD[i][j]>ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]){
+            if(i>0 && (ptrAv->TabelaPD[i][j] + ptr->ConteudoMapa[i-1][j])>(ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]+ ptr->ConteudoMapa[i-1][PosicaoMaiorPontoDeVida])){
                 PosicaoMaiorPontoDeVida = j;
             }else if(ptrAv->TabelaPD[i][j]==ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]){
                 if(i>0){
                     if((ptrAv->TabelaPD[i][j]+ptr->ConteudoMapa[i-1][j]+ptrAv->PontosVidaAtual)>(ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida] +ptr->ConteudoMapa[i-1][PosicaoMaiorPontoDeVida] + ptrAv->PontosVidaAtual)){
                         PosicaoMaiorPontoDeVida = j;
                     }
+                }
+            }else if(i==0){
+                if(ptrAv->TabelaPD[i][j]>ptrAv->TabelaPD[i][PosicaoMaiorPontoDeVida]){
+                    PosicaoMaiorPontoDeVida = j;
                 }
             }
         }
