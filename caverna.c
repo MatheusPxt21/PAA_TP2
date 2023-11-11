@@ -122,23 +122,23 @@ void resolverCaverna(Caverna caverna, const char *arquivoSaida) {
         desenfileirar(&fila);
         // Indo para esquerda  
         if (primeiro.y -1 >= 0 && 
-                pd[primeiro.x][primeiro.y - 1] < caverna.pontosVida + caverna.mapa[primeiro.x][primeiro.y -1] ) // Checando se posso ir para a esquerda e se preciso trocar o valor
+                pd[primeiro.x][primeiro.y - 1] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x][primeiro.y -1] ) // Checando se posso ir para a esquerda e se preciso trocar o valor
         {   
             if (primeiro.x != caverna.posicaoFinal[0] || primeiro.y - 1 != caverna.posicaoFinal[1])
             {
                 enfileirar(&fila, primeiro.x, primeiro.y - 1);
             }
-            pd[primeiro.x][primeiro.y - 1] = caverna.pontosVida + caverna.mapa[primeiro.x][primeiro.y -1];
+            pd[primeiro.x][primeiro.y - 1] = pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x][primeiro.y -1];
         }
         // Indo para direita 
          if (primeiro.x -1 >= 0 && 
-                 pd[primeiro.x - 1][primeiro.y] < caverna.pontosVida + caverna.mapa[primeiro.x - 1][primeiro.y] ) // Checando se posso ir para cima e se preciso trocar o valor
+                 pd[primeiro.x - 1][primeiro.y] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x - 1][primeiro.y] ) // Checando se posso ir para cima e se preciso trocar o valor
         {
             if (primeiro.x - 1 != caverna.posicaoFinal[0] || primeiro.y != caverna.posicaoFinal[1])
             {
                  enfileirar(&fila, primeiro.x - 1, primeiro.y);
             }
-            pd[primeiro.x - 1][primeiro.y] = caverna.pontosVida + caverna.mapa[primeiro.x - 1][primeiro.y];
+            pd[primeiro.x - 1][primeiro.y] = pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x - 1][primeiro.y];
         }
     }
     
@@ -154,7 +154,6 @@ void resolverCaverna(Caverna caverna, const char *arquivoSaida) {
         imprimirCaminho(saida, caverna.posicaoFinal[0], caverna.posicaoFinal[1], caverna.posicaoInicial[0], caverna.posicaoInicial[1]);
         fclose(saida);
     }
-    printf("%d", )
 }
 
 void gerar_caverna_aleatoria(const char *arquivo_saida) {
