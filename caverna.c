@@ -174,11 +174,11 @@ void gerar_caverna_aleatoria(const char *arquivo_saida) {
     srand(time(NULL));
 
     // Gera a matriz do mapa
-    char mapa[num_linhas][num_colunas];
+    int mapa[num_linhas][num_colunas];
     for (int i = 0; i < num_linhas; i++) {
         for (int j = 0; j < num_colunas; j++) {
             int valor = rand() % 41 - 20;  // Números aleatórios entre -20 e 20
-            mapa[i][j] = (char)(valor < 0 ? 'A' - valor - 1 : 'A' + valor);  // Converte para caractere ASCII imprimível
+            mapa[i][j] = valor;
         }
     }
 
@@ -192,14 +192,20 @@ void gerar_caverna_aleatoria(const char *arquivo_saida) {
         posicao_final[1] = rand() % num_colunas;
     }
 
-    // Coloca 'I' na posição inicial e 'F' na posição final
-    mapa[posicao_inicial[0]][posicao_inicial[1]] = 'I';
-    mapa[posicao_final[0]][posicao_final[1]] = 'F';
-
     // Escreve o mapa no arquivo
     for (int i = 0; i < num_linhas; i++) {
         for (int j = 0; j < num_colunas; j++) {
-            fprintf(f, "%c ", mapa[i][j]);
+            if (i == posicao_inicial[0] && j == posicao_inicial[1])
+            {
+                fprintf(f, "I ");
+                continue;
+            }
+             if (i == posicao_final[0] && j == posicao_final[1])
+            {
+                fprintf(f, "F ");
+                continue;
+            }
+                fprintf(f, "%d ", mapa[i][j]);
         }
         fprintf(f, "\n");
     }

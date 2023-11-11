@@ -14,7 +14,7 @@ int main() {
     //imprimirResultadoCaverna(caverna);
     resolverCaverna(caverna, "resultado2.txt");
 
-    //gerar_caverna_aleatoria("caverna_aleatoria.txt");
+    gerar_caverna_aleatoria("caverna_aleatoria.txt");
 
     return 0;
 }

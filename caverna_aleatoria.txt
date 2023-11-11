@@ -1,9 +1,4 @@
-8 8 72
-O K J L P S O F 
-M K Q N P A E T 
-M R N M G A D N 
-T Q C F U P N L 
-N A C H J S H C 
-C R P B A I F M 
-M A A O D I Q S 
-O F J B F Q K O 
+3 3 41
+-14 -6 -16 
+I 19 -11 
+-10 F 5 
