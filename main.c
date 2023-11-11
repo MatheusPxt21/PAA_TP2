@@ -1,5 +1,6 @@
 #include "caverna.h"
 
+
 int main() {
     FILE *entrada = fopen("caverna1.txt", "r");
     if (!entrada) {
@@ -12,6 +13,8 @@ int main() {
     fclose(entrada);
     //imprimirResultadoCaverna(caverna);
     resolverCaverna(caverna, "resultado.txt");
+
+    //gerar_caverna_aleatoria("caverna_aleatoria.txt");
 
     return 0;
 }

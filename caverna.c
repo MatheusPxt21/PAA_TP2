@@ -1,5 +1,8 @@
 #include "caverna.h"
 
+
+ int pd[MAX_LINHAS][MAX_COLUNAS] = {-1}; // Matriz de programação dinâmica
+
 // Defina o tamanho máximo para uma linha no arquivo
 #define MAX_LINHA 100
 
@@ -22,8 +25,17 @@ void lerCaverna(FILE *arquivo, Caverna *caverna) {
         for (int j = 0; j < caverna->colunas; j++) {
             if (numero != NULL) {
                 // Verifica se o numero é 'F' ou 'I'
-                if (numero[0] == 'F' || numero[0] == 'I') {
-                    // Se for 'F' ou 'I', armazene no mapa da caverna como caractere
+                if (numero[0] == 'F') {
+                    // Armazena a posição final
+                    caverna->posicaoFinal[0] = i;
+                    caverna->posicaoFinal[1] = j;
+                    // Armazena no mapa da caverna como caractere
+                    caverna->mapa[i][j] = numero[0];
+                } else if (numero[0] == 'I') {
+                    // Armazena a posição inicial
+                    caverna->posicaoInicial[0] = i;
+                    caverna->posicaoInicial[1] = j;
+                    // Armazena no mapa da caverna como caractere
                     caverna->mapa[i][j] = numero[0];
                 } else {
                     // Se não for 'F' ou 'I', leia como um número inteiro
@@ -58,66 +70,140 @@ void imprimirResultadoCaverna(Caverna caverna) {
 }
 
 // Função para imprimir o caminho ótimo no arquivo de saída
-void imprimirCaminho(FILE *arquivo, int caminho[MAX_LINHAS][MAX_COLUNAS], int i, int j) {
-    if (i == 0 && j == 0) {
+void imprimirCaminho(FILE *arquivo, int i, int j, int x, int y ) {
+    if (i == x && j == y) {
+       fprintf(arquivo, "%d %d\n", i, j ); 
         return;
     }
 
-    fprintf(arquivo, "%d %d\n", i, j);
-
-    if (caminho[i][j] == 1) {
-        imprimirCaminho(arquivo, caminho, i - 1, j);
+    if (i + 1 >= MAX_LINHA ) {
+        imprimirCaminho(arquivo, i, j + 1, x, y);
+         fprintf(arquivo, "%d %d\n", i, j );
+         return;
     } else {
-        imprimirCaminho(arquivo, caminho, i, j - 1);
-    }
-}
-
-//Função para resolver a caverna usando programação dinâmica
-void resolverCaverna(Caverna caverna, const char *arquivoSaida) {
-    int dp[MAX_LINHAS][MAX_COLUNAS] = {0}; // Matriz de programação dinâmica
-    int caminho[MAX_LINHAS][MAX_COLUNAS] = {0}; // Matriz para rastreamento do caminho
-
-    // Inicializa a primeira célula da matriz dp
-    dp[0][0] = caverna.mapa[0][0];
-
-    // Preenche a primeira coluna da matriz dp
-    for (int i = 1; i < caverna.linhas; i++) {
-        dp[i][0] = dp[i - 1][0] + caverna.mapa[i][0];
-        caminho[i][0] = 1; // 1 indica que veio de cima
-    }
-
-    // Preenche a primeira linha da matriz dp
-    for (int j = 1; j < caverna.colunas; j++) {
-        dp[0][j] = dp[0][j - 1] + caverna.mapa[0][j];
-        caminho[0][j] = 2; // 2 indica que veio da esquerda
-    }
-
-    // Preenche o restante da matriz dp
-    for (int i = 1; i < caverna.linhas; i++) {
-        for (int j = 1; j < caverna.colunas; j++) {
-            int esquerda = dp[i][j - 1];
-            int cima = dp[i - 1][j];
-
-            if (esquerda > cima) {
-                dp[i][j] = esquerda + caverna.mapa[i][j];
-                caminho[i][j] = 2; // 2 indica que veio da esquerda
-            } else {
-                dp[i][j] = cima + caverna.mapa[i][j];
-                caminho[i][j] = 1; // 1 indica que veio de cima
+        if (j + 1 >= MAX_COLUNAS)
+        {
+            imprimirCaminho(arquivo, i + 1, j , x, y);
+             fprintf(arquivo, "%d %d\n", i , j);
+             return;
+        }
+        else
+        {
+            if (pd[i + 1][j] > pd[i][j + 1])
+            {
+                imprimirCaminho(arquivo, i + 1, j , x, y);
+                fprintf(arquivo, "%d %d\n", i , j);
+                return;
+            }
+            else{
+                imprimirCaminho(arquivo, i, j + 1, x, y);
+                fprintf(arquivo, "%d %d\n", i, j );
+                return;
             }
         }
+        
     }
+    fprintf(arquivo, "%d %d\n", i, j );
+}
 
+// Função para resolver a caverna usando programação dinâmica
+void resolverCaverna(Caverna caverna, const char *arquivoSaida) {
+    
+    Fila fila;
+    inicializarFila(&fila);
+
+     // Inicializa a primeira célula
+    pd[caverna.posicaoInicial[0]][caverna.posicaoInicial[1]] = caverna.pontosVida;
+    enfileirar(&fila, caverna.posicaoInicial[0], caverna.posicaoInicial[1]);
+
+    while ( ! filaVazia(&fila))
+    {
+        ElementoFila primeiro = fila.frente->elemento;
+        desenfileirar(&fila);
+        // Indo para esquerda  
+        if (primeiro.y -1 >= 0 && 
+                pd[primeiro.x][primeiro.y - 1] < caverna.pontosVida + caverna.mapa[primeiro.x][primeiro.y -1] ) // Checando se posso ir para a esquerda e se preciso trocar o valor
+        {   
+            if (primeiro.x != caverna.posicaoFinal[0] || primeiro.y - 1 != caverna.posicaoFinal[1])
+            {
+                enfileirar(&fila, primeiro.x, primeiro.y - 1);
+            }
+            pd[primeiro.x][primeiro.y - 1] = caverna.pontosVida + caverna.mapa[primeiro.x][primeiro.y -1];
+        }
+        // Indo para direita 
+         if (primeiro.x -1 >= 0 && 
+                 pd[primeiro.x - 1][primeiro.y] < caverna.pontosVida + caverna.mapa[primeiro.x - 1][primeiro.y] ) // Checando se posso ir para cima e se preciso trocar o valor
+        {
+            if (primeiro.x - 1 != caverna.posicaoFinal[0] || primeiro.y != caverna.posicaoFinal[1])
+            {
+                 enfileirar(&fila, primeiro.x - 1, primeiro.y);
+            }
+            pd[primeiro.x - 1][primeiro.y] = caverna.pontosVida + caverna.mapa[primeiro.x - 1][primeiro.y];
+        }
+    }
+    
     // Verifica se é possível sair com vida da caverna
-    if (dp[caverna.linhas - 1][caverna.colunas - 1] <= 0) {
+    if (pd[caverna.posicaoFinal[0]][caverna.posicaoFinal[1]] <= 0) {
         // Imprime "impossível" se não for possível
         FILE *saida = fopen(arquivoSaida, "w");
-        fprintf(saida, "impossível\n");
+        fprintf(saida, "impossível\n"); 
         fclose(saida);
     } else {
         // Encontra o caminho ótimo e o imprime no arquivo de saída
         FILE *saida = fopen(arquivoSaida, "w");
-        imprimirCaminho(saida, caminho, caverna.linhas - 1, caverna.colunas - 1);
+        imprimirCaminho(saida, caverna.posicaoFinal[0], caverna.posicaoFinal[1], caverna.posicaoInicial[0], caverna.posicaoInicial[1]);
         fclose(saida);
     }
+    printf("%d", )
+}
+
+void gerar_caverna_aleatoria(const char *arquivo_saida) {
+    // Gera o número de linhas e colunas aleatoriamente (entre 3 e 8)
+    int num_linhas = rand() % 6 + 3;
+    int num_colunas = rand() % 6 + 3;
+
+    FILE *f = fopen(arquivo_saida, "w");
+    if (f == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    // Escreve informações iniciais
+    fprintf(f, "%d %d %d\n", num_linhas, num_colunas, rand() % 101); // Pontos de vida entre 0 e 100
+
+    // Gera o mapa aleatório
+    srand(time(NULL));
+
+    // Gera a matriz do mapa
+    char mapa[num_linhas][num_colunas];
+    for (int i = 0; i < num_linhas; i++) {
+        for (int j = 0; j < num_colunas; j++) {
+            int valor = rand() % 41 - 20;  // Números aleatórios entre -20 e 20
+            mapa[i][j] = (char)(valor < 0 ? 'A' - valor - 1 : 'A' + valor);  // Converte para caractere ASCII imprimível
+        }
+    }
+
+    // Escolhe posições inicial e final aleatórias
+    int posicao_inicial[2] = {rand() % num_linhas, rand() % num_colunas};
+    int posicao_final[2] = {rand() % num_linhas, rand() % num_colunas};
+
+    // Garante que as posições inicial e final são diferentes
+    while (posicao_inicial[0] == posicao_final[0] && posicao_inicial[1] == posicao_final[1]) {
+        posicao_final[0] = rand() % num_linhas;
+        posicao_final[1] = rand() % num_colunas;
+    }
+
+    // Coloca 'I' na posição inicial e 'F' na posição final
+    mapa[posicao_inicial[0]][posicao_inicial[1]] = 'I';
+    mapa[posicao_final[0]][posicao_final[1]] = 'F';
+
+    // Escreve o mapa no arquivo
+    for (int i = 0; i < num_linhas; i++) {
+        for (int j = 0; j < num_colunas; j++) {
+            fprintf(f, "%c ", mapa[i][j]);
+        }
+        fprintf(f, "\n");
+    }
+
+    fclose(f);
 }
