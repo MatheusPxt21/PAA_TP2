@@ -180,7 +180,7 @@ void PreencherFila(MatrizMapa *ptr,Aventureiro *ptrAv,Fila *fila){
 
 void EscreverArquivoDeSaida(Fila *FILA) {
     FILE *file;
-    file = fopen("..\\TP2\\Resultado\\Resultado.txt", "w");
+    file = fopen("Resultado/Resultado.txt", "w");
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo de saída.\n");
@@ -196,7 +196,7 @@ void EscreverArquivoDeSaida(Fila *FILA) {
 }
 void EscreverArquivoDeSaidaErro(){
     FILE *file;
-    file = fopen("..\\TP2\\Resultado\\Resultado.txt", "w");
+    file = fopen("Resultados/Resultado.txt", "w");
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo de saída.\n");

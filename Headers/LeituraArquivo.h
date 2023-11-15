@@ -11,3 +11,5 @@ typedef struct MatrizMapa{
 
 void LeituraMatriz(const char *arqEntrada,MatrizMapa *ptr);
 void EscreverSaida(const char *Saida);
+
+void GerarCavernaAleatoria(MatrizMapa *map);

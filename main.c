@@ -1,8 +1,12 @@
 #include "Headers/Aventureiro.h"
+#include <time.h>
 
 int main(){
+
+    srand(time(NULL));
+
     MatrizMapa ptr;
-    LeituraMatriz("..\\TP2\\MapasExemplo\\caverna1.txt",&ptr);
+    LeituraMatriz("MapasExemplo/caverna1.txt",&ptr);
     PilhaCoordenadas PtrCoordenadas;
     Fila filas;
     Aventureiro ptrAv;
@@ -19,5 +23,7 @@ int main(){
     IniciarDeslocamento(&ptr,&ptrAv,&PtrCoordenadas,&filas);
     //ApresentarTabelaSimplex(&ptrAv,&ptr);
 
+    printf("\n\n\n\n\n\n");
+    GerarCavernaAleatoria(&ptr);
     return 0;
 }
