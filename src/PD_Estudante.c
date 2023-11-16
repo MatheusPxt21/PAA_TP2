@@ -24,6 +24,8 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
             }
         }
     }
+
+    ptrEs->Caminho = (int*)malloc(sizeof(int));
 }
 
 void Deslocar(MatrizMapa *map, Estudante *est)
@@ -43,7 +45,8 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 
     
     do{ 
-        printf("Olhando a posicao map->ConteudoMapa[%d][%d]\n", linhaAtual, colunaAtual);
+        //printf("Olhando a posicao map->ConteudoMapa[%d][%d]\n", linhaAtual, colunaAtual);
+        
         //Preenchendo a posição à esquerda da posição atual:
         est->TabelaPD[linhaAtual][colunaAtual -1] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
     
@@ -82,6 +85,10 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 
 
     ApresentarTabelaPD(est, map);
+
+    FazerCaminho(est, map);
+
+    Imprime(est);
 }
 
 void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){
@@ -93,36 +100,63 @@ void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){
     }
 }
 
-//void IniciarDeslocamento(MatrizMapa *ptr,Estudante *ptrEs,PilhaCoordenadas *PtrCoordenadas,Fila *Filas);
-
-//int Deslocar(MatrizMapa *ptr, Estudante *ptrEs, PilhaCoordenadas *PtrCoordenadas, Fila *Filas);
-/*
-int EsquerdaLivre(int i,int j,Estudante *ptrEs,MatrizMapa *ptr)
+void FazerCaminho(Estudante *est, MatrizMapa *map)
 {
+    int linhaAtual = map->LinhaFinal;
+    int colunaAtual = map->ColunaFinal;
+
+    printf("\nLinhaFinal: %d\n", linhaAtual);
+    printf("ColunaFinal: %d\n", colunaAtual);
+    
+
+    int tamanhoCaminho = 0;
+    int capacidadeCaminho = 10; // Um valor inicial arbitrário
+    est->Caminho = (int *)malloc(capacidadeCaminho * sizeof(int));
+
+    est->Caminho[tamanhoCaminho++] = linhaAtual;
+    est->Caminho[tamanhoCaminho++] = colunaAtual;
+
+    do{
+        /**
+         * Verifica se o valor à direita é maior do que o valor abaixo
+         */
+        if(est->TabelaPD[linhaAtual +1][colunaAtual] > est->TabelaPD[linhaAtual][colunaAtual +1]){
+            linhaAtual++;
+            est->Caminho[tamanhoCaminho++] = linhaAtual;
+            est->Caminho[tamanhoCaminho++] = colunaAtual;
+        }else{
+            colunaAtual++;
+            est->Caminho[tamanhoCaminho++] = linhaAtual;
+            est->Caminho[tamanhoCaminho++] = colunaAtual;
+        }
+
+    }while(linhaAtual != map->LinhaInicial && colunaAtual != map->ColunaInicial);
+
+    if(est->TabelaPD[linhaAtual +1][colunaAtual] > est->TabelaPD[linhaAtual][colunaAtual +1]){
+        linhaAtual++;
+        est->Caminho[tamanhoCaminho++] = linhaAtual;
+        est->Caminho[tamanhoCaminho++] = colunaAtual;
+    }else{
+        colunaAtual++;
+        est->Caminho[tamanhoCaminho++] = linhaAtual;
+        est->Caminho[tamanhoCaminho++] = colunaAtual;
+    }
+
+    //est->Caminho = (int *)realloc(est->Caminho, tamanhoCaminho * sizeof(int));
 
 }
-
-int CimaLivre(int i,int j,Estudante *ptrEs,MatrizMapa *ptr)
-{
-
-}
-
-int EscolherMelhorCaminho(int i,Estudante *ptrEs,MatrizMapa *ptr)
-{
-
-}
-
-void ApresentarTabelaPD(Estudante *ptrEs,MatrizMapa *ptr)
-{
-
-}
-
-//void PreencherFila(MatrizMapa *ptr,Estudante *ptrEs,Fila *fila);
-
-//void EscreverArquivoDeSaida(Fila *fila);
 
 void EscreverArquivoDeSaidaErro()
 {
 
 }
-*/
+
+void Imprime(Estudante *est){
+    int tamanhoCaminho = sizeof(est->Caminho) * 2; // O dobro do tamanho, pois armazenamos linhas e colunas alternadamente
+
+    printf("Caminho: ");
+    for (int i = 0; i < tamanhoCaminho; i += 2) {
+        printf("(%d, %d) ", est->Caminho[i], est->Caminho[i + 1]);
+    }
+    printf("\n");
+}
