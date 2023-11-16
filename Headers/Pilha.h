@@ -1,4 +1,4 @@
-#include "LeituraArquivo.h"
+#include "../Headers/LeituraArquivo.h"
 
 typedef struct Coordenadas {
 
@@ -17,4 +17,3 @@ void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun);
 void pop(PilhaCoordenadas* ptr);
 void ApresentarCoordenadas(PilhaCoordenadas* ptr);
 void LiberarPilha(PilhaCoordenadas* ptr);
-
