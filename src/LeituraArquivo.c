@@ -45,3 +45,12 @@ void LeituraMatriz(const char *arqEntrada,MatrizMapa *ptr){
     }
     fclose(file);
 }
+
+void ImprimeArquivoLido(MatrizMapa *ptr){
+    for(int i = 0; i < ptr->LinhasMapa; i++){
+        for(int j = 0; j < ptr->ColunasMapa; j++){
+            printf("[%d] ", ptr->ConteudoMapa[i][j]);
+        }
+        printf("\n");
+    }
+}

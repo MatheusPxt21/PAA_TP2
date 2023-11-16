@@ -4,9 +4,14 @@ int main(){
     srand(time(NULL));
 
     MatrizMapa map;
-    LeituraMatriz("MapasExemplo/caverna5.txt",&map);
-
     Estudante est;
+
+    LeituraMatriz("MapasExemplo/caverna2.txt",&map);
+
+    ImprimeArquivoLido(&map);
+
+    //printf("\nPontos de vida: %d\n", map.VidaJogador);
+    
 
     Deslocar(&map, &est);
     

@@ -12,5 +12,7 @@ typedef struct MatrizMapa{
 
 void LeituraMatriz(const char *arqEntrada,MatrizMapa *ptr);
 
+void ImprimeArquivoLido(MatrizMapa *ptr);
+
 
 //void EscreverSaida(const char *Saida);

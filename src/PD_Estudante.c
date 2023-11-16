@@ -36,6 +36,8 @@ void Deslocar(MatrizMapa *map, Estudante *est)
     int linhaAtual = map->LinhaInicial;
     int colunaAtual = map->ColunaInicial;
 
+    printf("\nPontos de vida: %d\n", map->VidaJogador);
+
 
     /**
      *  Insere o valor da vida na posição da tabela PD correspondente à posição tida como inicial
@@ -43,7 +45,8 @@ void Deslocar(MatrizMapa *map, Estudante *est)
      */
     est->TabelaPD[linhaAtual][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual];
 
-    
+    printf("\nPontos de vida: %d\n", map->VidaJogador);
+
     do{ 
         //printf("Olhando a posicao map->ConteudoMapa[%d][%d]\n", linhaAtual, colunaAtual);
         
@@ -76,13 +79,17 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 
     }while(linhaAtual != map->LinhaFinal && colunaAtual != map->ColunaFinal);
     
+    printf("\nPontos de vida: %d\n", map->VidaJogador);
+
+//QUANDO UTILIZADA A CAVERNA2 ESTÁ QUEBRANDO EXATAMENTE NESSA PARTE
+
     //Preenchendo a posição à esquerda da posição atual:
-    est->TabelaPD[linhaAtual][colunaAtual -1] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
+//    est->TabelaPD[linhaAtual][colunaAtual -1] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
 
     //Preenchendo a posição acima da posição atual:
-    est->TabelaPD[linhaAtual -1][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual -1][colunaAtual];
+//    est->TabelaPD[linhaAtual -1][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual -1][colunaAtual];
 
-
+    printf("\nPontos de vida: %d\n", map->VidaJogador);
 
     ApresentarTabelaPD(est, map);
 
