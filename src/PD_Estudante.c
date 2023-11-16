@@ -35,6 +35,7 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 
     int linhaAtual = map->LinhaInicial;
     int colunaAtual = map->ColunaInicial;
+    int LinhaORColuna, AUXL,AUXC,LinhaAUX,ColunaAux,UltimaColuna,UltimaLinha;
 
     printf("\nPontos de vida: %d\n", map->VidaJogador);
 
@@ -45,16 +46,17 @@ void Deslocar(MatrizMapa *map, Estudante *est)
      */
     est->TabelaPD[linhaAtual][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual];
 
-    printf("\nPontos de vida: %d\n", map->VidaJogador);
+    //printf("\nPontos de vida: %d\n", map->VidaJogador);
 
     do{ 
         //printf("Olhando a posicao map->ConteudoMapa[%d][%d]\n", linhaAtual, colunaAtual);
         
         //Preenchendo a posição à esquerda da posição atual:
-        est->TabelaPD[linhaAtual][colunaAtual -1] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
+        est->TabelaPD[linhaAtual][colunaAtual -1] += est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
     
         //Preenchendo a posição acima da posição atual:
-        est->TabelaPD[linhaAtual -1][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual -1][colunaAtual];
+        est->TabelaPD[linhaAtual -1][colunaAtual] += est->PontosVidaAtual + map->ConteudoMapa[linhaAtual -1][colunaAtual];
+        ApresentarTabelaPD(est, map);
 
         /*
         *  Verifica se o valor armazenado acima é maior do que o valor armazenado à esquerda,
@@ -67,19 +69,60 @@ void Deslocar(MatrizMapa *map, Estudante *est)
             * da posição que estava até então
             */
            linhaAtual--;
-        }else{
+        }else if(est->TabelaPD[linhaAtual -1][colunaAtual] < est->TabelaPD[linhaAtual][colunaAtual - 1]){
             /*
             * Nesse caso percebeu que à esquerda teria uma vida maior.
             * Com isso, a coluna atual será decrementada em uma unidade
             */
            colunaAtual--;
-        }
+        }else{
+            AUXL = 0,AUXC = 0;
+            //printf("AUXL ==> %d \n AUXC ==> %d\n",AUXL,AUXC);
+            LinhaAUX = linhaAtual;
+            ColunaAux = colunaAtual;
+            //printf("LINHA AUX: %d Coluna Aux: %d\n",LinhaAUX,ColunaAux);
+            while(LinhaAUX>0 || ColunaAux>0 && AUXC==AUXL){
+                if(AUXL==0 && AUXC==0){
+                    AUXL = map->ConteudoMapa[LinhaAUX][ColunaAux];
+                    AUXC =  map->ConteudoMapa[LinhaAUX][ColunaAux];
+                }
+                if(LinhaAUX>0&&ColunaAux==0){
+                    //printf("Entrou Aqui,segundo IF!\n");
+                    AUXL += map->ConteudoMapa[LinhaAUX -1][UltimaColuna];
+                    AUXC +=  map->ConteudoMapa[LinhaAUX-1][ColunaAux];
+                    //printf("AUXL ==> %d \n AUXC ==> %d\n",AUXL,AUXC);
+                    LinhaAUX -=1;
+                }else if(ColunaAux>0 && LinhaAUX==0){
+                    AUXL += map->ConteudoMapa[LinhaAUX][ColunaAux-1];
+                    AUXC +=  map->ConteudoMapa[UltimaLinha][ColunaAux-1];
+                    ColunaAux -=1;
+                }else{
+                    AUXL += map->ConteudoMapa[LinhaAUX -1][ColunaAux];
+                    UltimaColuna = ColunaAux;
+                    AUXC+=map->ConteudoMapa[LinhaAUX][ColunaAux-1];
+                    UltimaLinha = LinhaAUX;
+                    //printf("Linha -1 Mapa:[%d %d] %d \n",LinhaAUX-1,ColunaAux,map->ConteudoMapa[LinhaAUX -1][ColunaAux]);
+                    //printf("Coluna -1 Mapa:[%d %d] %d \n",LinhaAUX,ColunaAux-1,map->ConteudoMapa[LinhaAUX][ColunaAux-1]);
+                    //printf("AUXL ==> %d \n AUXC ==> %d\n",AUXL,AUXC);
+                    ColunaAux -=1;
+                    LinhaAUX -=1;
+                }
+            }
+            if(AUXL>AUXC){
+                //printf("Dentro do IF!\n");
+                linhaAtual-=1;
+            }else{
+                //printf("Dentro do Else!\n");
+                colunaAtual-=1;
+            }
+            //printf("Final do else: %d %d \n",linhaAtual,colunaAtual);        
 
+        }
         est->PontosVidaAtual = est->TabelaPD[linhaAtual][colunaAtual];
 
-    }while(linhaAtual != map->LinhaFinal && colunaAtual != map->ColunaFinal);
+    }while(est->PontosVidaAtual > 0 && linhaAtual != map->LinhaFinal && colunaAtual != map->ColunaFinal);
     
-    printf("\nPontos de vida: %d\n", map->VidaJogador);
+    //printf("\nPontos de vida: %d\n", map->VidaJogador);
 
 //QUANDO UTILIZADA A CAVERNA2 ESTÁ QUEBRANDO EXATAMENTE NESSA PARTE
 
@@ -87,15 +130,13 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 //    est->TabelaPD[linhaAtual][colunaAtual -1] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual][colunaAtual -1];
 
     //Preenchendo a posição acima da posição atual:
-//    est->TabelaPD[linhaAtual -1][colunaAtual] = est->PontosVidaAtual + map->ConteudoMapa[linhaAtual -1][colunaAtual];
-
-    printf("\nPontos de vida: %d\n", map->VidaJogador);
+//    est->TabelaPD[linhaAtual -1][colunaAtual] = est->PontosVidaAtual + map -> ConteudoMapa[linhaAtual -1][colunaAtual];
 
     ApresentarTabelaPD(est, map);
 
-   // FazerCaminho(est, map);
+   FazerCaminho(est, map);
 
-   // Imprime(est);
+   Imprime(est);
 }
 
 void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){
@@ -105,6 +146,7 @@ void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 void FazerCaminho(Estudante *est, MatrizMapa *map)
