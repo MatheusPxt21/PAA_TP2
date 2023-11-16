@@ -86,9 +86,9 @@ void Deslocar(MatrizMapa *map, Estudante *est)
 
     ApresentarTabelaPD(est, map);
 
-    FazerCaminho(est, map);
+   // FazerCaminho(est, map);
 
-    Imprime(est);
+   // Imprime(est);
 }
 
 void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){

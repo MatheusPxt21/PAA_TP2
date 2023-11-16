@@ -4,7 +4,7 @@ int main(){
     srand(time(NULL));
 
     MatrizMapa map;
-    LeituraMatriz("MapasExemplo/caverna1.txt",&map);
+    LeituraMatriz("MapasExemplo/caverna5.txt",&map);
 
     Estudante est;
 
