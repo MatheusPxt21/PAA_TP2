@@ -14,6 +14,9 @@ void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr);
 
 void FazerCaminho(Estudante *est, MatrizMapa *map,PilhaCoordenadas *PILHA);
 
+void Resultado(PilhaCoordenadas *ptrPilha);
+
 void EscreverArquivoDeSaidaErro();
 
 void Imprime(Estudante *est);
+

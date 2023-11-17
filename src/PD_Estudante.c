@@ -178,6 +178,8 @@ void Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
         FazerCaminho(est, map,pilha);
         ApresentarCoordenadas(pilha);
 
+        Resultado(pilha);
+
         //Imprime(est);
 
     }
@@ -227,9 +229,35 @@ void FazerCaminho(Estudante *est, MatrizMapa *map,PilhaCoordenadas *PILHA){
 }
 
 
-void EscreverArquivoDeSaidaErro()
-{
+void EscreverArquivoDeSaidaErro(){
+    FILE *file;
+    file = fopen("Resultados/Resultado.txt", "w");
 
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de saída.\n");
+        return;
+    }
+    fprintf(file, "Nao foi possivel sair do labirinto com vida ): RIP\n");
+    fclose(file);
+}
+
+
+
+void Resultado(PilhaCoordenadas *ptrPilha) {
+    FILE *file;
+    file = fopen("Resultado/Resultado.txt", "w");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de saída.\n");
+        return;
+    }
+    Coordenadas* temp = ptrPilha->topo;
+    while (temp != NULL) {
+        fprintf(file, "%d %d\n", temp->line, temp->collun);
+        temp = temp->next;
+    }
+
+    fclose(file);
 }
 
 void Imprime(Estudante *est){
