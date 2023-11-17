@@ -13,7 +13,9 @@ typedef struct PilhaCoordenadas {
 
 void initialize(PilhaCoordenadas* ptr);
 int isEmpty(PilhaCoordenadas* ptr);
+int existeCoordenadas(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun);
 void push(PilhaCoordenadas* ptr, int ptrLine, int ptrCollun);
 void pop(PilhaCoordenadas* ptr);
 void ApresentarCoordenadas(PilhaCoordenadas* ptr);
 void LiberarPilha(PilhaCoordenadas* ptr);
+

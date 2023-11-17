@@ -5,15 +5,13 @@ int main(){
 
     MatrizMapa map;
     Estudante est;
+    PilhaCoordenadas ptrCoordenadas;
 
     LeituraMatriz("MapasExemplo/caverna4.txt",&map);
 
     ImprimeArquivoLido(&map);
-
-    //printf("\nPontos de vida: %d\n", map.VidaJogador);
     
-
-    Deslocar(&map, &est);
+    Deslocar(&map,&est,&ptrCoordenadas);
     
     return 0;
 

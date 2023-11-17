@@ -28,10 +28,10 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
     ptrEs->Caminho = (int*)malloc(sizeof(int));
 }
 
-void Deslocar(MatrizMapa *map, Estudante *est)
-{
+void Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
     
     InicializarEstudante(map, est);
+    initialize(pilha);
 
     int linhaAtual = map->LinhaInicial;
     int colunaAtual = map->ColunaInicial;
@@ -169,7 +169,8 @@ void Deslocar(MatrizMapa *map, Estudante *est)
     if(est->PontosVidaAtual>0){
          ApresentarTabelaPD(est, map);
 
-        //FazerCaminho(est, map);
+        FazerCaminho(est, map,pilha);
+        ApresentarCoordenadas(pilha);
 
         //Imprime(est);
 
@@ -188,47 +189,34 @@ void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr){
 }
 
 void FazerCaminho(Estudante *est, MatrizMapa *map,PilhaCoordenadas *PILHA){
-    int linhaAtual = map->LinhaFinal;
-    int colunaAtual = map->ColunaFinal;
-
-    printf("\nLinhaFinal: %d\n", linhaAtual);
-    printf("ColunaFinal: %d\n", colunaAtual);
-    
-
-    int tamanhoCaminho = 0;
-    int capacidadeCaminho = 10; // Um valor inicial arbitrário
-    est->Caminho = (int *)malloc(capacidadeCaminho * sizeof(int));
-
-    est->Caminho[tamanhoCaminho++] = linhaAtual;
-    est->Caminho[tamanhoCaminho++] = colunaAtual;
-
-    do{
-        /**
-         * Verifica se o valor à direita é maior do que o valor abaixo
-         */
-        if(est->TabelaPD[linhaAtual +1][colunaAtual] > est->TabelaPD[linhaAtual][colunaAtual +1]){
-            linhaAtual++;
-            est->Caminho[tamanhoCaminho++] = linhaAtual;
-            est->Caminho[tamanhoCaminho++] = colunaAtual;
-        }else{
-            colunaAtual++;
-            est->Caminho[tamanhoCaminho++] = linhaAtual;
-            est->Caminho[tamanhoCaminho++] = colunaAtual;
+    int ControlI = map->LinhaFinal,ControlJ = map->ColunaFinal,FLAGI,FLAGC;
+    push(PILHA,ControlI,ControlJ);
+    while(!(ControlI==map->LinhaInicial && ControlJ==map->ColunaInicial)){
+        if(ControlJ+1<=map->ColunasMapa-1 &&ControlI+1<=map->LinhasMapa-1 && est->TabelaPD[ControlI+1][ControlJ]>est->TabelaPD[ControlI][ControlJ+1]){
+            ControlI+=1;
+            push(PILHA,ControlI,ControlJ);
+        }else if(ControlJ+1<=map->ColunasMapa-1 && ControlI+1<=map->LinhasMapa-1 &&est->TabelaPD[ControlI+1][ControlJ]<est->TabelaPD[ControlI][ControlJ+1]){
+            ControlJ+=1;
+            push(PILHA,ControlI,ControlJ);
+        }else if(ControlJ+1<=map->ColunasMapa-1 && ControlI+1<=map->LinhasMapa-1 &&est->TabelaPD[ControlI+1][ControlJ]==est->TabelaPD[ControlI][ControlJ+1]){
+                FLAGI = ControlI - map->LinhaInicial;
+                FLAGC = ControlJ - map->ColunaInicial;
+                if(FLAGC>FLAGI){
+                    ControlI+=1;
+                }else{
+                    ControlJ+=1;
+                }
+                push(PILHA,ControlI,ControlJ);
+        }else if(ControlJ+1<=map->ColunasMapa-1){
+            ControlJ+=1;
+            push(PILHA,ControlI,ControlJ);
+        }else if(ControlI+1<=map->LinhasMapa-1){
+            ControlI+=1;
+            push(PILHA,ControlI,ControlJ);
         }
 
-    }while(linhaAtual != map->LinhaInicial && colunaAtual != map->ColunaInicial);
-
-    if(est->TabelaPD[linhaAtual +1][colunaAtual] > est->TabelaPD[linhaAtual][colunaAtual +1]){
-        linhaAtual++;
-        est->Caminho[tamanhoCaminho++] = linhaAtual;
-        est->Caminho[tamanhoCaminho++] = colunaAtual;
-    }else{
-        colunaAtual++;
-        est->Caminho[tamanhoCaminho++] = linhaAtual;
-        est->Caminho[tamanhoCaminho++] = colunaAtual;
     }
-
-    //est->Caminho = (int *)realloc(est->Caminho, tamanhoCaminho * sizeof(int));
+    push(PILHA,map->LinhaInicial,map->ColunaInicial);
 
 }
 
