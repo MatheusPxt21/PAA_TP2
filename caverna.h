@@ -19,6 +19,7 @@ typedef struct {
 
 } Caverna;
 
+// Protótipos de funções
 void lerCaverna(FILE *arquivo, Caverna *caverna);
 void imprimirCaminho(FILE *arquivo, int i, int j, int x, int y );
 void resolverCaverna(Caverna caverna, const char *arquivoSaida);

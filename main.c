@@ -1,7 +1,8 @@
 #include "caverna.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
+    printf("%s", argv[1]);
     FILE *entrada = fopen("caverna3.txt", "r");
     if (!entrada) {
         perror("Erro ao abrir o arquivo de entrada.");

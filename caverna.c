@@ -112,27 +112,28 @@ void resolverCaverna(Caverna caverna, const char *arquivoSaida) {
     Fila fila;
     inicializarFila(&fila);
 
-     // Inicializa a primeira célula
+     // Inicializa a primeira célula da matriz de programação dinamica e enfileira a posiçaõ inicial
     pd[caverna.posicaoInicial[0]][caverna.posicaoInicial[1]] = caverna.pontosVida;
     enfileirar(&fila, caverna.posicaoInicial[0], caverna.posicaoInicial[1]);
 
+    //Preenchendo a matriz de programação dinamica
     while ( ! filaVazia(&fila))
     {
         ElementoFila primeiro = fila.frente->elemento;
         desenfileirar(&fila);
-        // Indo para esquerda  
+        // Tira da fila a posição inicial e a partir dela tenta ir para a esquerda, teste se não é fora da matriz e quantidade de vida que fico  
         if (primeiro.y -1 >= 0 && 
-                pd[primeiro.x][primeiro.y - 1] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x][primeiro.y -1] ) // Checando se posso ir para a esquerda e se preciso trocar o valor
+                pd[primeiro.x][primeiro.y - 1] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x][primeiro.y -1] ) // Checando se posso ir para a esquerda e se preciso trocar o valor da celula da matriz
         {   
             if (primeiro.x != caverna.posicaoFinal[0] || primeiro.y - 1 != caverna.posicaoFinal[1])
             {
-                enfileirar(&fila, primeiro.x, primeiro.y - 1);
+                enfileirar(&fila, primeiro.x, primeiro.y - 1);  // enfileira a posição que estamos
             }
             pd[primeiro.x][primeiro.y - 1] = pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x][primeiro.y -1];
         }
-        // Indo para direita 
+        //Agora faz a mesma tentiva para a direita
          if (primeiro.x -1 >= 0 && 
-                 pd[primeiro.x - 1][primeiro.y] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x - 1][primeiro.y] ) // Checando se posso ir para cima e se preciso trocar o valor
+                 pd[primeiro.x - 1][primeiro.y] < pd[primeiro.x][primeiro.y] + caverna.mapa[primeiro.x - 1][primeiro.y] ) // Checando se posso ir para cima e se preciso trocar o valor da celula da matriz
         {
             if (primeiro.x - 1 != caverna.posicaoFinal[0] || primeiro.y != caverna.posicaoFinal[1])
             {
