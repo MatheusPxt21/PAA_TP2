@@ -1,4 +1,5 @@
 #include "../Headers/Pilha.h"
+
 void initialize(PilhaCoordenadas* ptr) {
     ptr->topo = NULL;
 }
