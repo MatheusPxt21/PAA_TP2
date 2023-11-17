@@ -160,6 +160,12 @@ void Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
             }
         }
     }
+    if(map->LinhaFinal+1<=map->LinhasMapa-1 && map->ColunaFinal+1<=map->ColunasMapa-1 && est->TabelaPD[map->LinhaFinal+1][map->ColunaFinal]>est->TabelaPD[map->LinhaFinal][map->ColunaFinal+1]){
+        est->TabelaPD[map->LinhaFinal][map->ColunaFinal] = est->TabelaPD[map->LinhaFinal+1][map->ColunaFinal];
+
+    }else if(map->LinhaFinal+1<=map->LinhasMapa-1 && map->ColunaFinal+1<=map->ColunasMapa-1 && est->TabelaPD[map->LinhaFinal+1][map->ColunaFinal]<est->TabelaPD[map->LinhaFinal][map->ColunaFinal+1]){
+        est->TabelaPD[map->LinhaFinal][map->ColunaFinal] = est->TabelaPD[map->LinhaFinal][map->ColunaFinal+1];
+    }
     est->PontosVidaAtual = est->TabelaPD[map->LinhaFinal][map->ColunaFinal];
     ApresentarTabelaPD(est, map);
     
