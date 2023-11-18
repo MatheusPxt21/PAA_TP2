@@ -246,15 +246,13 @@ void FazerCaminho(Estudante *est, MatrizMapa *map,PilhaCoordenadas *PILHA){
 
 void EscreverArquivoDeSaidaErro(){
     FILE *file;
-    file = fopen("Resultado.txt", "w");
-
-    printf("Oi");
+    file = fopen("resultado.txt", "w");
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo de saida.\n");
         return;
     }
-    fprintf(file, "Nao foi possivel sair do labirinto com vida ): RIP\n");
+    fprintf(file, "impossivel\n");
     fclose(file);
 }
 
@@ -262,7 +260,7 @@ void EscreverArquivoDeSaidaErro(){
 
 void Resultado(PilhaCoordenadas *ptrPilha) {
     FILE *file;
-    file = fopen("Resultado.txt", "w");
+    file = fopen("resultado.txt", "w");
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo de saida.\n");

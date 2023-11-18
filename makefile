@@ -7,7 +7,7 @@ Linux:
 	./main
 
 Windows:
-	./main.exe caverna3.txt
+	./main.exe caverna6.txt
 
 clean:
 	rm -f main
