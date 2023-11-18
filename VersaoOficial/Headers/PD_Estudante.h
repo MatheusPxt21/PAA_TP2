@@ -3,7 +3,6 @@
 typedef struct Estudante{
     int **TabelaPD;
     int PontosVidaAtual;
-    int *Caminho;
 }Estudante;
 
 void InicializarEstudante(MatrizMapa *ptrMapa,Estudante *ptrAv);

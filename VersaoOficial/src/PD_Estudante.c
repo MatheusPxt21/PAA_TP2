@@ -24,8 +24,6 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
             }
         }
     }
-
-    ptrEs->Caminho = (int*)malloc(sizeof(int));
 }
 
 void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenadas *ptrPilha){
@@ -38,8 +36,7 @@ void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenada
 }
 
 int Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
-    
-    InicializarEstudante(map, est);
+
     initialize(pilha);
 
     int linhaAtual = map->LinhaInicial;
