@@ -1,13 +1,13 @@
 all: main
 
 main: main.c Headers/MatrizAleatoria.h src/MatrizAleatoria.c
-	gcc main.c src/MatrizAleatoria.c -o randon
+	gcc main.c src/MatrizAleatoria.c -o random
 
 Linux:
-	./randon
+	./random
 
 Windows:
-	./randon.exe
+	./random.exe
 
 clean:
-	rm -f randon
+	rm -f random
