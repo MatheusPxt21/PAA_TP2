@@ -28,7 +28,16 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
     ptrEs->Caminho = (int*)malloc(sizeof(int));
 }
 
-void Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
+void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenadas *ptrPilha){
+    InicializarEstudante(map, ptrEst);
+    if(Deslocar(map, ptrEst, ptrPilha) == 1){
+        Resultado(ptrPilha);
+    }else{
+        EscreverArquivoDeSaidaErro();
+    }
+}
+
+int Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
     
     InicializarEstudante(map, est);
     initialize(pilha);
@@ -175,12 +184,18 @@ void Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
     if(est->PontosVidaAtual>0){
          ApresentarTabelaPD(est, map);
 
-        FazerCaminho(est, map,pilha);
-        ApresentarCoordenadas(pilha);
+        //FazerCaminho(est, map,pilha);
+        //ApresentarCoordenadas(pilha);
 
-        Resultado(pilha);
+        //Resultado(pilha);
 
         //Imprime(est);
+
+        if(est->TabelaPD[map->LinhaFinal][map->ColunaFinal] > 0){
+            FazerCaminho(est, map,pilha);
+            return 1;
+        }
+        return 0;
 
     }
 
@@ -231,10 +246,12 @@ void FazerCaminho(Estudante *est, MatrizMapa *map,PilhaCoordenadas *PILHA){
 
 void EscreverArquivoDeSaidaErro(){
     FILE *file;
-    file = fopen("Resultados/Resultado.txt", "w");
+    file = fopen("Resultado.txt", "w");
+
+    printf("Oi");
 
     if (file == NULL) {
-        printf("Erro ao abrir o arquivo de saída.\n");
+        printf("Erro ao abrir o arquivo de saida.\n");
         return;
     }
     fprintf(file, "Nao foi possivel sair do labirinto com vida ): RIP\n");
@@ -245,10 +262,10 @@ void EscreverArquivoDeSaidaErro(){
 
 void Resultado(PilhaCoordenadas *ptrPilha) {
     FILE *file;
-    file = fopen("Resultado/Resultado.txt", "w");
+    file = fopen("Resultado.txt", "w");
 
     if (file == NULL) {
-        printf("Erro ao abrir o arquivo de saída.\n");
+        printf("Erro ao abrir o arquivo de saida.\n");
         return;
     }
     Coordenadas* temp = ptrPilha->topo;

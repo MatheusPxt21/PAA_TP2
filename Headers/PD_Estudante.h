@@ -8,7 +8,9 @@ typedef struct Estudante{
 
 void InicializarEstudante(MatrizMapa *ptrMapa,Estudante *ptrAv);
 
-void Deslocar(MatrizMapa *map, Estudante *est, PilhaCoordenadas *pilha);
+void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenadas *ptrPilha);
+
+int Deslocar(MatrizMapa *map, Estudante *est, PilhaCoordenadas *pilha);
 
 void ApresentarTabelaPD(Estudante *ptrAv,MatrizMapa *ptr);
 

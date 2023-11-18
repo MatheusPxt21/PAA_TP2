@@ -28,7 +28,9 @@ int main(int argc, char *argv[]) {
     
     //GerarCavernaAleatoria(&map);
 
-    Deslocar(&map, &est, &ptrCoordenadas);
+    InicializarDeslocamento(&map, &est, &ptrCoordenadas);
+
+    //Deslocar(&map, &est, &ptrCoordenadas);
     
     return 0;
 
