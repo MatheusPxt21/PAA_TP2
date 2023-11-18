@@ -22,18 +22,17 @@ void InicializarAventureiro(MatrizMapa *ptrMapa,Aventureiro *ptrAv){
     }
 }
 
-void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,Fila *Filas){
+void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv, Fila *Filas){
     InicializarAventureiro(ptr,ptrAv);
-    initialize(PtrCoordenadas);
     initializeFila(Filas);
-    if(Deslocar(ptr,ptrAv,PtrCoordenadas,Filas)==1){
+    if(Deslocar(ptr,ptrAv, Filas)==1){
         EscreverArquivoDeSaida(Filas);
     }else{
         EscreverArquivoDeSaidaErro();
     }
 }
 
-int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, Fila *Filas){
+int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, Fila *Filas){
     //Calcular a primeira Linha
     int controlJ = 1,controlI = 1,i,j,NovoJ = ptr->ColunaInicial,NovoI =ptr->LinhaInicial ;
     for(i =NovoI;controlI == 1;i--){

@@ -13,7 +13,6 @@ int main(int argc, char *argv[]) {
 
     MatrizMapa map;
     Aventureiro avent;
-    PilhaCoordenadas ptrCoordenadas;
     Fila ptrFila;
 
     // Concatena o caminho base com o nome do arquivo fornecido como argumento
@@ -22,7 +21,7 @@ int main(int argc, char *argv[]) {
 
     LeituraMatriz(caminhoArquivo, &map);
 
-    IniciarDeslocamento(&map, &avent, &ptrCoordenadas, &ptrFila);
+    IniciarDeslocamento(&map, &avent, &ptrFila);
 
     return 0;
 

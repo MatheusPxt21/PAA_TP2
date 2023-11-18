@@ -7,9 +7,9 @@ typedef struct Aventureiro{
     int PontosVidaAtual;
 }Aventureiro;
 
-void InicializarAventureiro(MatrizMapa *ptrMapa,Aventureiro *ptrAv);
-void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,PilhaCoordenadas *PtrCoordenadas,Fila *Filas);
-int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, PilhaCoordenadas *PtrCoordenadas, Fila *Filas);
+void InicializarAventureiro(MatrizMapa *ptrMapa, Aventureiro *ptrAv);
+void IniciarDeslocamento(MatrizMapa *ptr,Aventureiro *ptrAv,Fila *Filas);
+int Deslocar(MatrizMapa *ptr, Aventureiro *ptrAv, Fila *Filas);
 int EsquerdaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr);
 int CimaLivre(int i,int j,Aventureiro *ptrAv,MatrizMapa *ptr);
 int EscolherMelhorCaminho(int i,Aventureiro *ptrAv,MatrizMapa *ptr);
