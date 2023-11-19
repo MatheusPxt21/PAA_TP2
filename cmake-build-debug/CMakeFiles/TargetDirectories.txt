@@ -1,3 +1,0 @@
-/home/matheuspeixoto/Documentos/GitHub/PAA_TP2/cmake-build-debug/CMakeFiles/PAA_TP2.dir
-/home/matheuspeixoto/Documentos/GitHub/PAA_TP2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/matheuspeixoto/Documentos/GitHub/PAA_TP2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
