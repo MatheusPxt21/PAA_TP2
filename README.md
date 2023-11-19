@@ -12,6 +12,7 @@
 
 <h3>Compilação e Execução</h3>
   <p>Para compilar e executar o projeto, execute os seguintes comandos no terminal:</p>
+
   <h4>Versão "Oficial"</h4>
   <p>Na referida pasta, basta digitar no terminal:</p>
     <ul>
@@ -42,7 +43,6 @@
           <li><code>random.exe</code> - Para executar o programa em um ambiente Windows.</li>
         </p>
     </ul>
-  
 
 <h3>Desenvolvedores</h3>
 
