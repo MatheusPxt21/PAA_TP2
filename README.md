@@ -12,15 +12,37 @@
 
 <h3>Compilação e Execução</h3>
   <p>Para compilar e executar o projeto, execute os seguintes comandos no terminal:</p>
-  <ul>
-      <li><code>make all</code> - Para compilar o programa.</li>
-    <br>e, a seguir, digite de acordo com seu Sistema Operacional:
-      <p>
-        <li><code>make Linux</code> - Para executar o programa em um ambiente Linux.</li>
-        <li><code>make Windows</code> - Para executar o programa em um ambiente Windows.</li>
-      </p>
-  </ul>
 
+  <h4>Versão "Oficial"</h4>
+  <p>Na referida pasta, basta digitar no terminal:</p>
+    <ul>
+        <li><code>make</code> - Para compilar o programa.</li>
+      <br>e, a seguir, digite de acordo com seu Sistema Operacional:
+        <p>
+          <li><code>./main nomearquivo.txt</code> - Para executar o programa em um ambiente Linux.</li>
+          <li><code>main.exe nomearquivo.txt</code> - Para executar o programa em um ambiente Windows.</li>
+        </p>
+    </ul>
+  <h4>Versão "Heurística"</h4>
+  <p>Na referida pasta, basta digitar no terminal:</p>
+    <ul>
+        <li><code>make</code> - Para compilar o programa.</li>
+      <br>e, a seguir, digite de acordo com seu Sistema Operacional:
+        <p>
+          <li><code>./heuristica nomearquivo.txt</code> - Para executar o programa em um ambiente Linux.</li>
+          <li><code>heuristica.exe nomearquivo.txt</code> - Para executar o programa em um ambiente Windows.</li>
+        </p>
+    </ul>
+  <h4>Geração de Mapas Aleatórios</h4>
+  <p>Na referida pasta, basta digitar no terminal:</p>
+    <ul>
+        <li><code>make</code> - Para compilar o programa.</li>
+      <br>e, a seguir, digite de acordo com seu Sistema Operacional:
+        <p>
+          <li><code>./random</code> - Para executar o programa em um ambiente Linux.</li>
+          <li><code>random.exe</code> - Para executar o programa em um ambiente Windows.</li>
+        </p>
+    </ul>
 
 <h3>Desenvolvedores</h3>
 
