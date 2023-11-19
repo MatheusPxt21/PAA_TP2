@@ -5,7 +5,7 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
     //Inicia com os pontos de vida lidos no arquivo
     ptrEs->PontosVidaAtual = ptrMapa->VidaJogador;
 
-    //Inicializa a tabela,armazenará os pontos de vida do jogador durante o percurso
+    //Inicializa a tabela que armazenará os pontos de vida do jogador durante o percurso
     ptrEs->TabelaPD = (int**)malloc(ptrMapa->LinhasMapa * sizeof(int*));
     for(int i = 0; i < ptrMapa->LinhasMapa; i++){
         ptrEs->TabelaPD[i] = (int*)malloc(ptrMapa->ColunasMapa * sizeof(int));
@@ -27,6 +27,8 @@ void InicializarEstudante(MatrizMapa *ptrMapa, Estudante *ptrEs)
 }
 
 void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenadas *ptrPilha){
+    
+    initialize(ptrPilha);
     InicializarEstudante(map, ptrEst);
     if(Deslocar(map, ptrEst, ptrPilha) == 1){
         Resultado(ptrPilha);
@@ -37,7 +39,6 @@ void InicializarDeslocamento(MatrizMapa *map, Estudante *ptrEst, PilhaCoordenada
 
 int Deslocar(MatrizMapa *map, Estudante *est,PilhaCoordenadas *pilha){
 
-    initialize(pilha);
 
     int linhaAtual = map->LinhaInicial;
     int colunaAtual = map->ColunaInicial;
